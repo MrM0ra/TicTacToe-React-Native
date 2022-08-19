@@ -1,5 +1,5 @@
 import { StatusBar } from 'expo-status-bar';
-import { FlatList, StyleSheet, Text, Touchable, TouchableOpacity, View } from 'react-native';
+import { FlatList, StyleSheet, Text, Touchable, TouchableOpacity, View, Image} from 'react-native';
 import react from 'react';
 
 export default function App() {
@@ -75,43 +75,84 @@ export default function App() {
 
 	return (
 		<View style={styles.container}>
-			<StatusBar style="auto" />
-			<Text style={styles.txtHeader}>TicTacToe</Text>
-			<Text>{notification}</Text>
-			<FlatList 
-				style={styles.list} 
-				data={board} 
-				numColumns={3} 
-				refreshing={true} 
-				extraData={refresh}
-				renderItem= {
-					( {item, index} ) => 
-						<TouchableOpacity style={styles.square} onPress={() => pressField(index)}>
-							<Text>{item}</Text>
-						</TouchableOpacity>
-				}
-			>
 
-			</FlatList>
-			<Text>Turno: {currentTurn}</Text>
+			<Image 
+				source={require('./assets/bg.jpg')}
+				style={styles.backgroundImage}
+			/>
+
+			<View style={styles.header}>
+				<StatusBar style="auto" />
+				<Text style={styles.txtHeader}>TicTacToe</Text>
+				<Text>{notification}</Text>
+			</View>
+			<View style={styles.flatListContainer}>
+				<Image 
+					source={require('./assets/frame.png')}
+					style={styles.image}
+				/>
+				<FlatList 
+					style={styles.list} 
+					data={board} 
+					numColumns={3} 
+					refreshing={true} 
+					extraData={refresh}
+					renderItem= {
+						( {item, index} ) => 
+							<TouchableOpacity style={styles.square} onPress={() => pressField(index)}>
+								<Text style={styles.txtXO}>{item}</Text>
+							</TouchableOpacity>
+					}
+				>
+				</FlatList>
+			</View>
+			<Text style={styles.topMaring10}>Turno: {currentTurn}</Text>
 		</View>
 	);
 }
 
 const styles = StyleSheet.create({
+  header:{
+	top:-100,
+	justifyContent:'center',
+	alignItems:'center'
+  },
   container: {
 	flex: 1,
 	backgroundColor: '#fff',
 	alignItems: 'center',
 	justifyContent: 'center',
   },
+  flatListContainer: {
+	justifyContent:'center',
+	alignItems:'center',
+	height:300,
+	width:'100%',
+  },
   txtHeader: {
 	fontSize: 40,
 	fontStyle: 'bold',
   },
+  topMaring10:{
+	marginTop:20
+  },
+  txtXO:{
+	fontSize:60,
+  },
+  backgroundImage:{
+	position:'absolute',
+	zIndex: -1,
+	width: '100%',
+	height: '100%',
+  },
+  image:{
+	width: 300,
+	height: 300,
+	position: 'absolute',
+  },
   list: {
 	width: 300,
-	height: 400,
+	height: 300,
 	display:'grid',
 	placeItems:'center',
   },
@@ -120,11 +161,8 @@ const styles = StyleSheet.create({
 	justifyContent:'center'
   },
   square:{
-	width:30,
-	height:60,
-	backgroundColor: 'gray',
-	margin: 10,
-	display:'flex',
+	width:100,
+	height:100,
 	justifyContent:'center',
 	alignItems: 'center',
   },
