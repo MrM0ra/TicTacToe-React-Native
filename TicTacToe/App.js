@@ -1,62 +1,83 @@
 import { StatusBar } from 'expo-status-bar';
-import { StyleSheet, Text, Touchable, TouchableOpacity, View } from 'react-native';
+import { FlatList, StyleSheet, Text, Touchable, TouchableOpacity, View } from 'react-native';
 import react from 'react';
 
 export default function App() {
  
-    const [number, setNumber] = react.useState(1)
+	const [notification, setnotification] = react.useState("Player X to start")
 
-    const addNumber = () => {
-        setNumber(number+1)
-    }
-    
-    const lessNumber = () => {
-        setNumber(number-1)
-    }
+	const [refresh, setRefresh] = react.useState(false)
 
-    return (
-    <View style={styles.container}>
-      <Text style={styles.txtM}>Victor mora's app!</Text>
-      <text>The number is: {number}</text>
-      <TouchableOpacity style={styles.btnLikePrimary} onPress={addNumber}>
-        <Text>
-            Add
-        </Text>
-      </TouchableOpacity>
-      <button onClick={addNumber}>Add</button>
-      <button onClick={lessNumber}>Take</button>
-      <TouchableOpacity style={styles.btnLikeSecondary} onPress={lessNumber}>
-        <Text>
-            Take
-        </Text>
-      </TouchableOpacity>
-      <StatusBar style="auto" />
-    </View>
-  );
+	const [currentPlayer, setCurrentPlayer] = react.useState("X")
+
+	const [board, setboard] = react.useState(
+		[
+			" "," "," ",
+			" "," "," ",
+			" "," "," "
+		]
+	)
+
+	const pressField = (index) => {
+		let newBoard = board;
+		newBoard[index] = currentPlayer
+		setboard(newBoard)
+		setRefresh(!refresh)
+		currentPlayer==="X" ? setCurrentPlayer("O") : setCurrentPlayer("X")
+	}
+
+	return (
+		<View style={styles.container}>
+			<StatusBar style="auto" />
+			<Text style={styles.txtHeader}>TicTacToe</Text>
+			<Text>{notification}</Text>
+			<FlatList 
+				style={styles.list} 
+				data={board} 
+				numColumns={3} 
+				refreshing={true} 
+				extraData={refresh}
+				renderItem= {
+					( {item, index} ) => 
+						<TouchableOpacity style={styles.square} onPress={() => pressField(index)}>
+							<Text>{item}</Text>
+						</TouchableOpacity>
+				}
+			>
+
+			</FlatList>
+		</View>
+	);
 }
 
 const styles = StyleSheet.create({
   container: {
-    flex: 1,
-    backgroundColor: '#fff',
-    alignItems: 'center',
-    justifyContent: 'center',
+	flex: 1,
+	backgroundColor: '#fff',
+	alignItems: 'center',
+	justifyContent: 'center',
   },
-  txtM: {
-    fontSize:50,
+  txtHeader: {
+	fontSize: 40,
+	fontStyle: 'bold',
   },
-  btnLikePrimary: {
-    padding:10,
-    backgroundColor:'blue',
-    borderRadius:10,
-    margin:10,
-    color:'white'
+  list: {
+	width: 300,
+	height: 400,
+	display:'grid',
+	placeItems:'center',
   },
-  btnLikeSecondary: {
-    padding:10,
-    backgroundColor:'red',
-    borderRadius:10,
-    margin:10,
-    color:'White'
+  centeredInside: {
+	display:'flex',
+	justifyContent:'center'
+  },
+  square:{
+	width:30,
+	height:60,
+	backgroundColor: 'gray',
+	margin: 10,
+	display:'flex',
+	justifyContent:'center',
+	alignItems: 'center',
   },
 });
