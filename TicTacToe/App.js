@@ -4,11 +4,11 @@ import react from 'react';
 
 export default function App() {
  
-	const [notification, setnotification] = react.useState("Player X to start")
+	const [currentPlayer, setCurrentPlayer] = react.useState("X")
+
+	const [notification, setnotification] = react.useState("Player "+currentPlayer+" to start")
 
 	const [refresh, setRefresh] = react.useState(false)
-
-	const [currentPlayer, setCurrentPlayer] = react.useState("X")
 
 	const [currentTurn, setCurrentTurn] = react.useState(0)
 
@@ -28,6 +28,31 @@ export default function App() {
 			setRefresh(!refresh)
 			currentPlayer==="X" ? setCurrentPlayer("O") : setCurrentPlayer("X")
 			setCurrentTurn(currentTurn+1)
+			checkIfWon()
+		}
+	}
+
+	const checkIfWon = () => {
+		if(currentTurn>=4){
+			if(board[0] == board[1] && board[1]==board[2] && board[0]!=" " 
+				||
+				board[3] == board[4] && board[4]==board[5] && board[3]!=" " 
+				||
+				board[6] == board[7] && board[7]==board[8] && board[6]!=" " 
+				||
+				board[0] == board[4] && board[4]==board[8] && board[0]!=" " 
+				||
+				board[2] == board[4] && board[4]==board[6] && board[2]!=" " 
+				||
+				board[0] == board[3] && board[3]==board[6] && board[0]!=" " 
+				||
+				board[1] == board[4] && board[4]==board[7] && board[1]!=" " 
+				||
+				board[2] == board[5] && board[5]==board[8] && board[2]!=" " ){
+				alert("PLAYER WON")
+			}else if(currentTurn>=8){
+				alert("TIED")
+			}
 		}
 	}
 
