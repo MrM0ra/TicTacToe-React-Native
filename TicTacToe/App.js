@@ -12,7 +12,7 @@ export default function App() {
 
 	const [currentTurn, setCurrentTurn] = react.useState(0)
 
-	const [board, setboard] = react.useState(
+	const [board, setBoard] = react.useState(
 		[
 			" "," "," ",
 			" "," "," ",
@@ -24,9 +24,8 @@ export default function App() {
 		if(board[index] !="X" && board[index] !="O"){
 			let newBoard = board;
 			newBoard[index] = currentPlayer
-			setboard(newBoard)
+			setBoard(newBoard)
 			setRefresh(!refresh)
-			currentPlayer==="X" ? setCurrentPlayer("O") : setCurrentPlayer("X")
 			setCurrentTurn(currentTurn+1)
 			checkIfWon()
 		}
@@ -49,11 +48,29 @@ export default function App() {
 				board[1] == board[4] && board[4]==board[7] && board[1]!=" " 
 				||
 				board[2] == board[5] && board[5]==board[8] && board[2]!=" " ){
-				alert("PLAYER WON")
+				showAlert(1, currentPlayer)
 			}else if(currentTurn>=8){
-				alert("TIED")
+				showAlert(2)
 			}
 		}
+		
+		currentPlayer==="X" ? setCurrentPlayer("O") : setCurrentPlayer("X")
+	}
+
+	const showAlert = (num) => {
+		if(num!=1){
+			alert("TIED")
+		}else{
+			alert("PLAYER "+currentPlayer+" WON")
+		}
+		setCurrentTurn(0)
+		setBoard(
+			[
+				" "," "," ",
+				" "," "," ",
+				" "," "," "
+			]
+		)
 	}
 
 	return (
