@@ -10,6 +10,8 @@ export default function App() {
 
 	const [currentPlayer, setCurrentPlayer] = react.useState("X")
 
+	const [currentTurn, setCurrentTurn] = react.useState(0)
+
 	const [board, setboard] = react.useState(
 		[
 			" "," "," ",
@@ -19,11 +21,14 @@ export default function App() {
 	)
 
 	const pressField = (index) => {
-		let newBoard = board;
-		newBoard[index] = currentPlayer
-		setboard(newBoard)
-		setRefresh(!refresh)
-		currentPlayer==="X" ? setCurrentPlayer("O") : setCurrentPlayer("X")
+		if(board[index] !="X" && board[index] !="O"){
+			let newBoard = board;
+			newBoard[index] = currentPlayer
+			setboard(newBoard)
+			setRefresh(!refresh)
+			currentPlayer==="X" ? setCurrentPlayer("O") : setCurrentPlayer("X")
+			setCurrentTurn(currentTurn+1)
+		}
 	}
 
 	return (
@@ -46,6 +51,7 @@ export default function App() {
 			>
 
 			</FlatList>
+			<Text>Turno: {currentTurn}</Text>
 		</View>
 	);
 }
